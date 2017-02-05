@@ -4,10 +4,13 @@ import csv
 
 #setting up database
 
+#server = MongoClient('127.0.0.1')
 server = MongoClient('149.89.150.100')
 db = server.PokeMongo
 c = db.students
+c.remove() # Clear Collection
 
+# print c.count()
 
 #csv data
 
@@ -19,17 +22,20 @@ courses = csv.DictReader(f2)
 
 
 #putting data in the database
-
 for p in peeps:
-	d = {}
-	d['name'] = p['name']
-	d['age'] = int(p['age'])
-	d['id'] = int(p['id'])
-	for co in courses:
-		if co['id'] == p['id']:
-			d[co['code']] = int(co['mark'])
-	f2.seek(0)
-	c.insert_one(d)
+
+    d = {}
+    d['name'] = p['name']
+    d['age'] = int(p['age'])
+    d['id'] = int(p['id'])
+    for co in courses:
+        if co['id'] == p['id']:
+            d[co['code']] = int(co['mark'])
+    print d
+    c.insert_one(d)
+    f2.seek(0)
 
 f1.close()
 f2.close()
+
+# print c.count()
