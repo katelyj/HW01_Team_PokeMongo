@@ -4,8 +4,8 @@ import csv
 
 #setting up database
 
-server = MongoClient('127.0.0.1')
-#server = MongoClient('149.89.150.100')
+#server = MongoClient('127.0.0.1')
+server = MongoClient('149.89.150.100')
 db = server.PokeMongo
 c = db.students
 c.remove() # Clear Collection

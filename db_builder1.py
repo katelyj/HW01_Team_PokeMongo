@@ -13,8 +13,8 @@ def average(data):
 
 #setting up database
 
-server = MongoClient('127.0.0.1')
-#server = MongoClient('149.89.150.100')
+#server = MongoClient('127.0.0.1')
+server = MongoClient('149.89.150.100')
 db = server.PokeMongo
 c = db.students
 
@@ -27,3 +27,24 @@ for student in students:
                                               average(student['courses']))
 
 # populating with teachers
+
+f = open("teachers.csv", "r")
+teachers = csv.DictReader(f)
+
+t = db.teachers
+t.remove() # Clear collection
+for teacher in teachers:
+    d = {}
+    d['name'] = teacher['teacher']
+    d['course'] = teacher['code']
+    d['period'] = teacher['period']
+    student_list = c.find( { 'courses.code' : d['course'] } )
+    students = []
+    for student in student_list:
+        students += [ student['id'] ]
+    d['students'] = students
+    # print d
+    t.insert_one(d)
+
+# print t.count()
+
